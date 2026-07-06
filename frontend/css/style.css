@@ -1,1 +1,161 @@
+/* Base Resets & Scrollbar */
+body {
+    background: radial-gradient(circle at top right, #2a2340 0%, transparent 40%),
+                radial-gradient(circle at bottom left, #10243d 0%, transparent 35%),
+                #09090B;
+    background-attachment: fixed;
+    color: #FAFAFA;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.011em; /* Phase 4B: Manrope reads slightly loose at UI sizes; a small negative tracking tightens body text without affecting headings' own tracking utilities */
+}
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
 
+/* Keyboard focus (Phase 4B: Accessibility). Mouse/touch users never see
+   this (that's what :focus-visible is for); keyboard users get a clear,
+   on-brand ring instead of the browser default (or nothing at all). */
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid #8B5CF6;
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* Premium Glassmorphism (Phase 4B: refined)
+   Blur reduced from 24px to 18px — still reads as frosted glass, but a
+   full-panel 24px backdrop-filter is one of the more GPU-expensive
+   effects available, and the brief explicitly calls for avoiding
+   excessive blur. Border/shadow tuned to the new formal tokens. */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.32);
+}
+
+/* Elevated surface: for content that should read as "above" the base
+   glass panels (currently just the setup card). Opaque rather than
+   translucent — no backdrop-filter at all, which is what lets us drop
+   the setup screen's redundant double-blur (see index.html). */
+.surface-elevated {
+    background: #151518;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s ease;
+}
+.glass-input:focus { border-color: #8B5CF6; background: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+
+/* Button system (Phase 4B): consistent height/radius/press/shadow across
+   every CTA instead of each button re-declaring its own padding/height. */
+.btn { height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 600; font-size: 0.875rem; transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: #8B5CF6; color: #FAFAFA; box-shadow: 0 4px 16px rgba(139,92,246,0.35); }
+.btn-primary:hover { background: #A78BFA; box-shadow: 0 6px 20px rgba(139,92,246,0.45); }
+.btn-secondary { background: rgba(255,255,255,0.06); color: #FAFAFA; border: 1px solid rgba(255,255,255,0.08); }
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+/* Animations & Interactions */
+.hover-lift { transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease; }
+.hover-lift:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+.hover-lift:active { transform: translateY(0) scale(0.98); }
+
+.fade-enter { animation: fadeSlide 0.3s ease-out forwards; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Skeleton loading placeholders (Phase 4B). A plain opacity pulse rather
+   than a moving gradient sweep — visually communicates "loading" just as
+   well while only animating `opacity` (GPU-cheap, no layout/paint cost). */
+.skeleton { background: rgba(255,255,255,0.06); border-radius: 12px; animation: skeletonPulse 1.4s ease-in-out infinite; }
+@keyframes skeletonPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* Album Art Rotation & Glass Ring */
+.record-ring { position: relative; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+.album-spin { animation: spin 12s linear infinite; }
+.album-spin.paused { animation-play-state: paused; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Premium Sliders (Progress & EQ) */
+.premium-slider { -webkit-appearance: none; width: 100%; background: transparent; outline: none; }
+.premium-slider::-webkit-slider-runnable-track { width: 100%; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.1); transition: height 0.2s ease; }
+.premium-slider:hover::-webkit-slider-runnable-track { height: 8px; background: rgba(255,255,255,0.15); }
+.premium-slider::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #FAFAFA; margin-top: -6px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); opacity: 0.9; transition: opacity 0.2s ease, transform 0.2s spring; }
+.premium-slider:hover::-webkit-slider-thumb,
+.premium-slider:active::-webkit-slider-thumb,
+.premium-slider:focus-visible::-webkit-slider-thumb { opacity: 1; transform: scale(1.1); margin-top: -4px;}
+/* Phase 4A: the rules above used to gate the thumb's visibility entirely
+   behind :hover, which never fires on touchscreens — meaning the seek-bar
+   handle was invisible on every Android phone. Base opacity is now 0.9
+   (visible at rest) with a subtle grow on hover/press/focus. Also give the
+   whole input a comfortable touch hit-box without changing the visible
+   track/thumb size (which are sized by their own pseudo-elements above). */
+.premium-slider, .eq-slider { min-height: 44px; }
+
+/* EQ Sliders Override */
+.eq-slider::-webkit-slider-runnable-track { height: 6px; background: rgba(255,255,255,0.1); }
+.eq-slider::-webkit-slider-thumb { opacity: 1; background: #8B5CF6; border: 2px solid #fff; margin-top: -5px; }
+.eq-slider.right-channel::-webkit-slider-thumb { background: #A78BFA; }
+
+/* Grid */
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; }
+@media (max-width: 480px) {
+    /* Phase 4A: 140px min + 1.5rem gap doesn't reliably fit 2 columns on
+       320-360px phones (falls back to an oversized single column). A
+       slightly smaller minimum + tighter gap keeps a comfortable 2-column
+       grid on small Android screens. Untouched above 480px. */
+    .grid-cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+}
+
+/* Equalizer Animation (Tiny Bars) */
+.eq-bars { display: flex; gap: 2px; height: 12px; align-items: flex-end; }
+.eq-bar { width: 3px; background: #8B5CF6; border-radius: 2px; animation: bounce 1s infinite ease-in-out alternate; }
+.eq-bar:nth-child(1) { animation-delay: 0s; } .eq-bar:nth-child(2) { animation-delay: 0.2s; } .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0% { height: 30%; } 100% { height: 100%; } }
+
+/* Utility: hide scrollbar on horizontally-scrolling rows (e.g. EQ preset
+   chips) while keeping them scrollable. Phase 4A: this class was already
+   referenced on the preset-chip row but was never actually defined, so
+   that row showed a visible scrollbar strip — defining it here. */
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+/* --- Phase 4A: Mobile UX & Responsive Polish --- */
+
+/* Dynamic viewport height: on mobile Chrome, 100vh includes space the
+   address bar will later occupy, causing a jump/overscroll on load and a
+   gap when the keyboard opens. 100dvh tracks the *actual* visible area.
+   Applied via #app-root (ID specificity) so it reliably overrides
+   Tailwind's .h-screen utility without fighting cascade order. Falls
+   back silently to the existing h-screen (100vh) on older browsers. */
+#app-root { height: 100dvh; }
+
+/* Safe-area support: keep header/player clear of notches, camera
+   cutouts, and Android gesture-nav bars. Scoped to mobile/tablet widths
+   (below Tailwind's `lg` breakpoint) so desktop's existing spacing
+   (unaffected by device insets) is left exactly as-is. */
+@media (max-width: 1023px) {
+    .app-header { padding-top: calc(0.75rem + env(safe-area-inset-top)); }
+    .player-dock { bottom: calc(1rem + env(safe-area-inset-bottom)); }
+}
+
+/* Landscape on a phone means very little vertical height to work with.
+   Compact the chrome (header, tab bar, player) further so the actual
+   content area doesn't get squeezed to almost nothing. */
+@media (orientation: landscape) and (max-height: 500px) {
+    .app-header { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .mobile-tab-bar { padding: 0.25rem; margin-bottom: 0.25rem; }
+    .player-dock { bottom: 0.5rem; }
+}
+
+/* Landscape safe-area: clear camera cutouts / rounded corners on the
+   left/right edges when the phone is rotated. */
+@media (orientation: landscape) {
+    #app-screen { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+}
