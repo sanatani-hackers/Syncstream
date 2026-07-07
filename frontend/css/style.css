@@ -93,25 +93,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* Phase 4A: the rules above used to gate the thumb's visibility entirely
    behind :hover, which never fires on touchscreens — meaning the seek-bar
    handle was invisible on every Android phone. Base opacity is now 0.9
-   (visible at rest) with a subtle grow on hover/press/focus. Also give the
-   whole input a comfortable touch hit-box without changing the visible
-   track/thumb size (which are sized by their own pseudo-elements above). */
-.premium-slider, .eq-slider { min-height: 44px; }
+   (visible at rest) with a subtle grow on hover/press/focus. */
+
+/* Phase 4C: the 44px touch-height below (from 4A) turned out to create a
+   real problem specifically for #seek-bar: it sits in a wrapper positioned
+   `-top-[8px]` so it visually overlaps the top edge of the player panel by
+   design, but a 44px-tall hit-region starting at that same -8px position
+   extends ~36px down — deep enough to overlap the play/skip/mode button
+   row directly beneath it, causing accidental taps. EQ sliders don't have
+   this problem (nothing sits directly above/below within 44px), so they
+   keep a comfortable, but reduced, touch height; the seek bar gets its own
+   smaller, position-aware override so it can no longer reach the buttons.
+   `touch-action: pan-y` on both means a vertical swipe that merely starts
+   on a slider is treated as page scroll, not a slider grab — only a
+   deliberate horizontal drag engages the slider. None of this touches the
+   sliders' oninput/value logic — same events, same handlers, same audio
+   pipeline. */
+.premium-slider, .eq-slider { min-height: 32px; touch-action: pan-y; }
+#seek-bar { min-height: 20px; }
 
 /* EQ Sliders Override */
 .eq-slider::-webkit-slider-runnable-track { height: 6px; background: rgba(255,255,255,0.1); }
 .eq-slider::-webkit-slider-thumb { opacity: 1; background: #8B5CF6; border: 2px solid #fff; margin-top: -5px; }
 .eq-slider.right-channel::-webkit-slider-thumb { background: #A78BFA; }
 
-/* Grid */
-.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; }
-@media (max-width: 480px) {
-    /* Phase 4A: 140px min + 1.5rem gap doesn't reliably fit 2 columns on
-       320-360px phones (falls back to an oversized single column). A
-       slightly smaller minimum + tighter gap keeps a comfortable 2-column
-       grid on small Android screens. Untouched above 480px. */
-    .grid-cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
-}
+/* Snappier, unambiguous button taps: skips the browser's default
+   double-tap-to-zoom gesture delay/disambiguation on every button in the
+   app. Pure input-handling hint — doesn't touch any click/onclick logic. */
+button { touch-action: manipulation; }
 
 /* Equalizer Animation (Tiny Bars) */
 .eq-bars { display: flex; gap: 2px; height: 12px; align-items: flex-end; }
@@ -158,4 +167,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    left/right edges when the phone is rotated. */
 @media (orientation: landscape) {
     #app-screen { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+}
+
+/* Phase 4C: on the narrowest phones (<400px), the latency pill, the new
+   always-visible username+room-id pill, and the role badge don't all fit
+   comfortably. Latency is a debug/power-user metric — least essential of
+   the three for the identity info this phase asks to surface — so it's
+   the one that steps aside here. Reappears at 400px+, which covers the
+   overwhelming majority of Android phones. */
+@media (max-width: 399px) {
+    #latency-pill { display: none; }
 }
