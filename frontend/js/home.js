@@ -15,19 +15,19 @@ export async function fetchHomeRecommendations() {
             const startIndex = runtime.homeDataCache.length;
             runtime.homeDataCache = runtime.homeDataCache.concat(data.results);
             const html = data.results.map((song, idx) => {
-                const durationBadge = song.duration
-                    ? `<span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-textMain text-[10px] font-semibold px-1.5 py-0.5 rounded-md tracking-wide">${formatTime(song.duration)}</span>`
+                const durationLabel = song.duration
+                    ? `<span class="text-[11px] text-textMuted font-mono flex-shrink-0">${formatTime(song.duration)}</span>`
                     : '';
                 return `
-                <div class="glass-panel p-3 rounded-2xl cursor-pointer flex flex-col group hover-lift" onclick="requestSongFromHome(${startIndex + idx})">
-                    <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-4">
-                        <img src="${song.thumbnail}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                            <div class="w-12 h-12 rounded-full bg-textMain flex items-center justify-center shadow-glass"><i class="ph-fill ph-play text-app text-xl ml-1"></i></div>
-                        </div>
-                        ${durationBadge}
+                <div class="flex items-center glass-panel rounded-xl p-1.5 sm:p-2 gap-3 hover-lift cursor-pointer group" onclick="requestSongFromHome(${startIndex + idx})">
+                    <img src="${song.thumbnail}" class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg object-cover shadow-sm flex-shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-semibold text-sm truncate text-textMain group-hover:text-primary transition-colors">${song.title}</h4>
                     </div>
-                    <h4 class="font-bold text-sm line-clamp-2 text-textMain group-hover:text-primary transition-colors">${song.title}</h4>
+                    ${durationLabel}
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-textMuted group-hover:text-primary group-hover:bg-primarySurface transition-all flex-shrink-0">
+                        <i class="ph-fill ph-play text-sm"></i>
+                    </div>
                 </div>
             `;
             }).join('');

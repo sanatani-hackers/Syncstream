@@ -12,6 +12,7 @@
 export const els = {
     setup: document.getElementById('setup-screen'), app: document.getElementById('app-screen'),
     navRoom: document.getElementById('nav-room-id'), navRole: document.getElementById('nav-role'),
+    navUsername: document.getElementById('nav-username'),
     navLatency: document.getElementById('nav-latency'), playerArt: document.getElementById('player-art'),
     playerTitle: document.getElementById('player-title'), playerStatus: document.getElementById('player-status'),
     seekBar: document.getElementById('seek-bar'), timeCur: document.getElementById('time-current'),

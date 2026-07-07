@@ -18,6 +18,7 @@ export function joinApp(requestedRole) {
     if (!rId) rId = Math.random().toString(36).substr(2, 6).toUpperCase();
     state.roomId = rId; state.role = requestedRole;
     els.navRoom.innerText = state.roomId;
+    els.navUsername.innerText = state.userName;
 
     els.setup.classList.add('hidden'); els.app.classList.remove('hidden'); els.app.classList.add('flex');
     connectWebSocket(); fetchHomeRecommendations();
