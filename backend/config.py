@@ -18,7 +18,7 @@ YDL_OPTS_SEARCH = {
     'extract_flat': True,
     'quiet': True,
     'no_warnings': True,
-    'cookiefile': "../cookie.txt",
+    'cookiefile': "cookies.txt",
     'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS
 }
 
@@ -28,7 +28,7 @@ YDL_OPTS_STREAM = {
     'no_warnings': True,
     'noplaylist': True,
     'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
-     'cookiefile': "../cookie.txt",
+    'cookiefile': "cookies.txt",
     'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS
 }
 
