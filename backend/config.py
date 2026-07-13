@@ -13,7 +13,7 @@ PORT = 8000
 YDL_SOCKET_TIMEOUT_SECONDS = 15  # Phase 3: don't let a stalled extractor hang a request forever
 
 # Yahan apni cookies file ka path set karein (make sure ye file backend folder me ho)
-COOKIE_FILE_PATH = "cookies.txt"
+COOKIE_FILE_PATH = os.path.join(BASE_DIR, "cookies.txt")
 
 YDL_OPTS_SEARCH = {
     'format': 'bestaudio/best',
