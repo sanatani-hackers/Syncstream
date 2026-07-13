@@ -4,6 +4,7 @@ Central configuration for the SyncStream backend.
 All magic numbers / static option dicts that used to live inline in
 main.py are collected here so they're easy to find and tune.
 """
+import os
 
 # --- Server ---
 HOST = "0.0.0.0"
