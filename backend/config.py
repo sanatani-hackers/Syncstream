@@ -12,14 +12,17 @@ PORT = 8000
 # --- yt-dlp options ---
 YDL_SOCKET_TIMEOUT_SECONDS = 15  # Phase 3: don't let a stalled extractor hang a request forever
 
+# Yahan apni cookies file ka path set karein (make sure ye file backend folder me ho)
+COOKIE_FILE_PATH = "cookies.txt"
+
 YDL_OPTS_SEARCH = {
     'format': 'bestaudio/best',
     'default_search': 'ytsearch15',
     'extract_flat': True,
     'quiet': True,
     'no_warnings': True,
-    'cookiefile': "cookies.txt",
-    'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS
+    'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS,
+    'cookiefile': COOKIE_FILE_PATH  # <-- Cookies added for search
 }
 
 YDL_OPTS_STREAM = {
@@ -28,8 +31,8 @@ YDL_OPTS_STREAM = {
     'no_warnings': True,
     'noplaylist': True,
     'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
-    'cookiefile': "cookies.txt",
-    'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS
+    'socket_timeout': YDL_SOCKET_TIMEOUT_SECONDS,
+    'cookiefile': COOKIE_FILE_PATH  # <-- Cookies added for streaming
 }
 
 # --- Search / playlist result limits ---
