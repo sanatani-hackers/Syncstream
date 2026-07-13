@@ -14,6 +14,7 @@ PORT = 8000
 YDL_SOCKET_TIMEOUT_SECONDS = 15  # Phase 3: don't let a stalled extractor hang a request forever
 
 # Yahan apni cookies file ka path set karein (make sure ye file backend folder me ho)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 COOKIE_FILE_PATH = os.path.join(BASE_DIR, "cookies.txt")
 
 YDL_OPTS_SEARCH = {
